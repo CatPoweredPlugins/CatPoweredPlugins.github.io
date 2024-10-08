@@ -163,7 +163,6 @@ let error_icon=`
         </div>
       `;
       for (let run of runs) {
-        console.log(run.repository.name+" : "+run.name+" : "+run.status);
 	if (run.status === "in_progress") {
 	  template = CreateElement(run) + template;  
 	}
