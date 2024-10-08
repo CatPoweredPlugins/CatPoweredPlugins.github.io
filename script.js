@@ -36,7 +36,7 @@ let error_icon=`
           globalSettings.area = "users";
         }
         localStorage.setItem("Settings", JSON.stringify(globalSettings));
-	let stopped=false; //we changed settings, so it may actually work.
+	stopped = false; //we changed settings, so it may actually work.
         if (globalSettings.token === "") {
           clearInterval(triggerTimer)
           triggerTimer = setInterval(UpdateWorkflows,360000);
@@ -176,22 +176,15 @@ let error_icon=`
 	  <center><p><h3>No pending/running jobs found</h3></p></center>
         </div>
       `;
-      let counter=0;
       for (let run of runs) {
 	if (run.status === "in_progress") {
 	  template = CreateElement(run) + template;
-          counter++;
 	}
 	if (run.status === "queued") {
 	  template = template + CreateElement(run);
-          counter++;
 	}
       }
-      if (counter !== runs.length) {
-        console.warn("something wrong "+runs.length+"!="+counter);
-      } else {
-	document.getElementById("total").innerHTML=runs.length;
-      }
+      document.getElementById("total").innerHTML=runs.length;
       document.getElementById("workarea").innerHTML=template;
       statusElement.title="Updated successfuly";
       statusElement.innerHTML=success_icon+`Last updated: <relative-time format="elapsed" datetime="${(new Date(Date.now())).toISOString()}" data-view-component="true">${(new Date(Date.now())).toLocaleString()}</relative-time> ago`
