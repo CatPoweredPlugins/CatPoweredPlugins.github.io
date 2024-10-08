@@ -73,7 +73,7 @@ let error_icon=`
         let rowTemplate = `
           <div class="table-row" >
             <div style="padding: 5px;">
-              <div style="max-width: 300px;display: inline-block;vertical-align: top;">
+              <div style="width: 40%;display: inline-block;vertical-align: top;">
                 <a href="${run.html_url}">
                   ${run.status==="queued"?queued_icon:inprogress_icon}
                   <span style="min-width: 95%">${run.display_title}</span>
@@ -84,7 +84,7 @@ let error_icon=`
               <div style="display: inline;vertical-align: middle; margin-left: 4%;padding-top: 20px;">
                 <a class="branch-name" target="_parent" style="max-width: 200px;" title="${run.repository.name+"/"+run.head_branch}" href="${run.repository.html_url+"/tree/refs/heads/"+run.head_branch}">${run.repository.name+"/"+run.head_branch}</a>
               </div>
-              <div style="float: right;">
+              <div style="float: right; width:20%;">
                  <div class="text-small" style="display: inline-block;">
                    <div>
                      <div>
