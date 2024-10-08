@@ -56,6 +56,19 @@ let error_icon=`
 	document.getElementById(globalSettings.area).checked=true;
     }
 
+    function compareRuns(a, b) {
+        const dateA = new Date(a.created_at);
+        const dateB = new Date(b.created_at);;
+        if (dateA < dateB) {
+            return -1;
+        }
+        if (dateA > dateB) {
+            return 1;
+        }
+        return 0;
+    }
+
+
     function CreateElement(run) {
         let rowTemplate = `
           <div class="table-row" >
@@ -148,15 +161,16 @@ let error_icon=`
           this.workflows = json;
         }).catch((err) => this.err2 = err);
 
-      if (typeof err2 != 'undefined') {
-	stopped = true;
-        statusElement.title=err2.message;
-        statusElement.innerHTML=error_icon;
-        return;
-      }
-;
+        if (typeof err2 != 'undefined') {
+	  stopped = true;
+          statusElement.title=err2.message;
+          statusElement.innerHTML=error_icon;
+          return;
+        }
+
         runs = runs.concat(workflows.workflow_runs);
       }
+      runs.sort(compareRuns);
       let template=`
         <div class="vis-only-no-siblings table-row">
 	  <center><p><h3>No pending/running jobs found</h3></p></center>
