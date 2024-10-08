@@ -18,6 +18,7 @@
         border-radius: 3px;
         border-style: solid;
         border-width: 1px;
+        min-width: 500px;
     }
     .table-row {
 	border-top: 1px solid black;
@@ -49,19 +50,19 @@
   </style>
   <script src="script.js" async></script>
 </head>
-<body>
+<body style="min-width:550px">
 <center><h1>Workflow runs queue</h1></center>
 <form id="mainForm" onchange="SaveConfig()">
     <div class="box">
-        <label for="radio-group">Area of effect
+        <label for="users">Area of effect
             <br>
         </label>
         <div class="radio-group">
             <div>
                 <input name="area" id="users" value="users" type="radio">
-                <label for="radio-group-0">User</label>
+                <label for="users">User</label>
                 <input name="area" id="orgs" value="orgs" type="radio" checked=true>
-                <label for="radio-group-1">Organization</label>
+                <label for="orgs">Organization</label>
             </div>
         </div>
     </div>

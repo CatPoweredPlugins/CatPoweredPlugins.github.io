@@ -82,7 +82,7 @@ let error_icon=`
                 <span class="text-small"><span class="text-bold">${run.name}</span>#${run.run_number}<span> by <a href="${run.actor.html_url}">${run.actor.login}</a></span></span>  
               </div>
               <div style="display: inline;vertical-align: middle; margin-left: 4%;padding-top: 20px;">
-                <a class="branch-name" target="_parent" style="max-width: 200px;" title="${run.repository.name+"/"+run.head_branch}" href="${run.repository.html_url+"/tree/refs/heads/"+run.head_branch}">${run.repository.name+"/"+run.head_branch}</a>
+                <a class="branch-name" target="_parent" style="max-width: 30%;" title="${run.repository.name+"/"+run.head_branch}" href="${run.repository.html_url+"/tree/refs/heads/"+run.head_branch}">${run.repository.name+"/"+run.head_branch}</a>
               </div>
               <div style="float: right; width:20%;">
                  <div class="text-small" style="display: inline-block;">
