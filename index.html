@@ -3,37 +3,86 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Pending Actions</title>
-  <link rel="stylesheet" href="/github.css/github-pandoc.css">
+  <title>Workflow runs queue</title>
+  <link rel="stylesheet" href="github.css/github-pandoc.css">
+  <style>
+    div.box {
+	margin: 20px;
+        padding: 5px;
+        border-radius: 5px;
+        box-shadow:0 0 0 1px #cacaca,0 0 0 4px #eee
+    }
+    .table {
+        padding: 0px !important;
+        border-color: black;
+        border-radius: 3px;
+        border-style: solid;
+        border-width: 1px;
+    }
+    .table-row {
+	border-top: 1px solid black;
+	list-style-type: none;
+        margin-top: -1px;
+    }
+    .branch-name {
+        display: inline-block;
+        padding: 2px 6px;
+        font: 12px monospace;
+        word-break: break-all;
+        color:rgb(71, 139, 230);
+        background-color: rgba(65, 132, 228, 0.1);
+        border-radius: 6px;
+    }
+    #workarea div.vis-only-no-siblings{
+        display: none;
+    } 
+    #workarea div.vis-only-no-siblings:only-child {
+        display: block;
+    }
+    .anim-rotate {
+        animation: rotate-keyframes 1s linear infinite;
+    }
+    @keyframes rotate-keyframes {100% { transform: rotate(360deg); } }
+  </style>
+  <script src="script.js" async></script>
 </head>
 <body>
-<div class="rendered-form">
-    <div class="formbuilder-radio-group form-group field-radio-group">
-        <label for="radio-group" class="formbuilder-radio-group-label">Area of effect
+<center><h1>Workflow runs queue</h1></center>
+<form id="mainForm" onchange="SaveConfig()">
+    <div class="box">
+        <label for="radio-group">Area of effect
             <br>
         </label>
         <div class="radio-group">
-            <div class="formbuilder-radio">
-                <input name="radio-group" access="false" id="radio-group-0" value="user" type="radio">
+            <div>
+                <input name="area" id="users" value="users" type="radio">
                 <label for="radio-group-0">User</label>
-            </div>
-            <div class="formbuilder-radio">
-                <input name="radio-group" access="false" id="radio-group-1" value="org" type="radio">
+                <input name="area" id="orgs" value="orgs" type="radio" checked=true>
                 <label for="radio-group-1">Organization</label>
             </div>
         </div>
     </div>
-    <div class="formbuilder-text form-group field-name">
-        <label for="name" class="formbuilder-text-label">User/Orgainzation name
-            <br>
-        </label>
-        <input type="text" placeholder="input name here" class="form-control" name="name" access="false" value="CatPoweredPlugins" id="name">
+    <div class="box">
+        <label for="name">User/Orgainzation name:</label>
+        <input type="text" placeholder="input name here" name="name" access="false" value="CatPoweredPlugins" id="name">
     </div>
-    <div class="formbuilder-text form-group field-token">
-        <label for="token" class="formbuilder-text-label">Access token
-            <br>
-        </label>
-        <input type="text" placeholder="leave empty to get only public repositories" class="form-control" name="token" access="false" id="token">
+    <div class="box">
+        <label for="token">Access token:</label>
+        <input type="text" placeholder="leave empty to get only public repositories" name="token" access="false" id="token">
     </div>
+</form>
+<div class="box">
+Update status:<span id="status" title="Waiting. Is javascript enabled?">
+          <div style="display: inline-block; vertical-align: sub;">
+            <svg width="16" height="16" style="margin-top: 2px;vertical-align: top; color: #c69026 !important;fill: currentColor;" viewBox="0 0 16 16" version="1.1"><path d="M8 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"></path></svg>
+          </div>
+</span>
 </div>
+<div id="workarea" class="box table">
+<div class="vis-only-no-siblings table-row">
+	<center><p><h3>No pending/running jobs found</h3></p></center>
+</div>
+</div>
+
+<script type="module" src="https://unpkg.com/@github/relative-time-element@latest/dist/bundle.js"></script>
 </body>
