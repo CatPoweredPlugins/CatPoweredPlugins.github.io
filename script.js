@@ -170,23 +170,31 @@ let error_icon=`
 
         runs = runs.concat(workflows.workflow_runs);
       }
-      runs.sort(compareRuns);
+      runs = runs.sort(compareRuns).filter(r => ((r.status === "queued") || (r.status === "in_progress")));
       let template=`
         <div class="vis-only-no-siblings table-row">
 	  <center><p><h3>No pending/running jobs found</h3></p></center>
         </div>
       `;
+      let counter=0;
       for (let run of runs) {
 	if (run.status === "in_progress") {
-	  template = CreateElement(run) + template;  
+	  template = CreateElement(run) + template;
+          counter++;
 	}
 	if (run.status === "queued") {
 	  template = template + CreateElement(run);
+          counter++;
 	}
+      }
+      if (counter !== runs.length) {
+        console.warn("something wrong "+runs.length+"!="+counter);
+      } else {
+	document.getElementById("total").innerHTML=runs.length;
       }
       document.getElementById("workarea").innerHTML=template;
       statusElement.title="Updated successfuly";
-      statusElement.innerHTML=success_icon;
+      statusElement.innerHTML=success_icon+`Last updated: <relative-time format="elapsed" datetime="${(new Date(Date.now())).toISOString()}" data-view-component="true">${(new Date(Date.now())).toLocaleString()}</relative-time> ago`
     }
 
 
