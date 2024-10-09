@@ -148,7 +148,7 @@ let error_icon=`
       
       let runs=[];
       for (let repo of repos) {
-        let request_workflows = new Request(`https://api.github.com/repos/${globalSettings.name}/${repo.name}/actions/runs?per_page=100`, { method: "GET" });
+        let request_workflows = new Request(`https://api.github.com/repos/${globalSettings.name}/${repo.name}/actions/runs?created=>${(new Date(new Date().setDate(new Date().getDate()-3))).toISOString().split("T")[0] }&per_page=100`, { method: "GET" });
         if (globalSettings.token !== "") {
           request_workflows.headers.append("Authorization", `Bearer ${globalSettings.token}`);
         }
@@ -187,7 +187,7 @@ let error_icon=`
       document.getElementById("total").innerHTML=runs.length;
       document.getElementById("workarea").innerHTML=template;
       statusElement.title="Updated successfuly";
-      statusElement.innerHTML=success_icon+`Last updated: <relative-time format="elapsed" datetime="${(new Date(Date.now())).toISOString()}" data-view-component="true">${(new Date(Date.now())).toLocaleString()}</relative-time> ago`
+      statusElement.innerHTML=success_icon+`Last updated: <relative-time format="elapsed" datetime="${(new Date()).toISOString()}" data-view-component="true">${(new Date()).toLocaleString()}</relative-time> ago`
     }
 
 
