@@ -119,7 +119,6 @@ let error_icon=`
     }
     
     async function UpdateWorkflows() {
-      console.time(name);
       if (stopped) {
         return;
       }
@@ -196,7 +195,6 @@ let error_icon=`
       document.getElementById("workarea").innerHTML=template;
       statusElement.title="Updated successfuly";
       statusElement.innerHTML=success_icon+`Last updated: <relative-time format="elapsed" datetime="${(new Date()).toISOString()}" data-view-component="true">${(new Date()).toLocaleString()}</relative-time> ago`
-      console.timeEnd(name);
     }
 
 
