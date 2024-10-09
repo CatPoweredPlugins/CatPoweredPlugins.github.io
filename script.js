@@ -119,6 +119,7 @@ let error_icon=`
     }
     
     async function UpdateWorkflows() {
+      console.time(name);
       if (stopped) {
         return;
       }
@@ -147,29 +148,36 @@ let error_icon=`
       }
       
       let runs=[];
-      for (let repo of repos) {
-        let request_workflows = new Request(`https://api.github.com/repos/${globalSettings.name}/${repo.name}/actions/runs?created=>${(new Date(new Date().setDate(new Date().getDate()-3))).toISOString().split("T")[0] }&per_page=100`, { method: "GET" });
-        if (globalSettings.token !== "") {
-          request_workflows.headers.append("Authorization", `Bearer ${globalSettings.token}`);
-        }
-        let response_workflows = await fetch(request_workflows).then(response => {
-          if (!response.ok) {
-            throw new Error("HTTP error " + response.status);
+
+      try {
+        let fromdate = (new Date(new Date().setDate(new Date().getDate()-3))).toISOString().split("T")[0];
+        let requests = repos.map(function(repo){
+          let request_workflow = new Request(`https://api.github.com/repos/${globalSettings.name}/${repo.name}/actions/runs?created=>${fromdate}&per_page=100`, { method: "GET" });
+          if (globalSettings.token !== "") {
+            request_workflow.headers.append("Authorization", `Bearer ${globalSettings.token}`);
           }
-          return response.json();
-        }).then(json => {
-          this.workflows = json;
-        }).catch((err) => this.err2 = err);
-
-        if (typeof err2 != 'undefined') {
-	  stopped = true;
-          statusElement.title=err2.message;
-          statusElement.innerHTML=error_icon;
-          return;
+          return request_workflow;
+        });
+        let fetches = requests.map((request) => fetch(request));
+        let responses = await Promise.all(fetches);
+        let errors = responses.filter((response) => !response.ok);
+        if (errors.length > 0) {
+          throw errors[0];
         }
-
-        runs = runs.concat(workflows.workflow_runs);
+        let json = responses.map((response) => response.json());
+        let data = await Promise.all(json);
+        data.forEach((result) => runs = runs.concat(result.workflow_runs));
+      } catch (error) {
+        this.err2 = error;
       }
+
+      if (typeof err2 != 'undefined') {
+       stopped = true;
+       statusElement.title=err2.message;
+       statusElement.innerHTML=error_icon;
+       return;
+      }
+
       runs = runs.sort(compareRuns).filter(r => ((r.status === "queued") || (r.status === "in_progress")));
       let template=`
         <div class="vis-only-no-siblings table-row">
@@ -188,6 +196,7 @@ let error_icon=`
       document.getElementById("workarea").innerHTML=template;
       statusElement.title="Updated successfuly";
       statusElement.innerHTML=success_icon+`Last updated: <relative-time format="elapsed" datetime="${(new Date()).toISOString()}" data-view-component="true">${(new Date()).toLocaleString()}</relative-time> ago`
+      console.timeEnd(name);
     }
 
 
