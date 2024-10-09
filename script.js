@@ -126,7 +126,7 @@ let error_icon=`
       statusElement.title="Updating...";
       statusElement.innerHTML=inprogress_icon;
 
-      let request_repos = new Request(`https://api.github.com/${globalSettings.area}/${globalSettings.name}/repos`, { method: "GET" });
+      let request_repos = new Request(`https://api.github.com/${globalSettings.area}/${globalSettings.name}/repos?per_page=1000`, { method: "GET" });
       if (globalSettings.token !== "") {
 	request_repos.headers.append("Authorization", `Bearer ${globalSettings.token}`);
       }
@@ -148,7 +148,7 @@ let error_icon=`
       
       let runs=[];
       for (let repo of repos) {
-        let request_workflows = new Request(`https://api.github.com/repos/${globalSettings.name}/${repo.name}/actions/runs`, { method: "GET" });
+        let request_workflows = new Request(`https://api.github.com/repos/${globalSettings.name}/${repo.name}/actions/runs?per_page=100`, { method: "GET" });
         if (globalSettings.token !== "") {
           request_workflows.headers.append("Authorization", `Bearer ${globalSettings.token}`);
         }
